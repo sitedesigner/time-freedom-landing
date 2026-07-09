@@ -1,0 +1,52 @@
+{
+  "goal": 1000000,
+  "started": "2026-07-06T23:09:03.469660",
+  "leads": [
+    {
+      "timestamp": "2026-07-06T23:09:03.469712",
+      "name": "Direct Test",
+      "email": "direct-landing-test-2026-07-06@example.com",
+      "phone": "",
+      "challenge": "",
+      "contact_id": "J7WOOfb7ndfktBH9QtKM",
+      "opportunity_id": null,
+      "deal_value": 50000
+    },
+    {
+      "timestamp": "2026-07-06T23:13:23.234009",
+      "name": "Verify Now",
+      "email": "verify-2026-07-06@example.com",
+      "phone": "",
+      "challenge": "",
+      "contact_id": "lYaoR3he4Y0MBxuPyY4R",
+      "opportunity_id": null,
+      "deal_value": 50000
+    },
+    {
+      "timestamp": "2026-07-09T10:35:08.349282",
+      "name": "ZunaTest Lead",
+      "email": "davidgoecke+test2@bizrunner.com",
+      "phone": "425-466-8600",
+      "challenge": "Drowning in client work and admin, need leverage.",
+      "contact_id": "E5DqKdRQdjm1wSSdvoLF",
+      "opportunity_id": null,
+      "deal_value": 50000
+    },
+    {
+      "timestamp": "2026-07-09T10:39:02.863015",
+      "name": "ClarityTest Lead",
+      "email": "davidgoecke+clarity@bizrunner.com",
+      "phone": "425-466-8699",
+      "challenge": "Scaling fast but losing personal time.",
+      "contact_id": "YlxGyCq71DZBKCyQe0qY",
+      "opportunity_id": "YdDZnUD4Y9zj1VGNUR9U",
+      "deal_value": 50000
+    }
+  ],
+  "contacts_created": 4,
+  "opportunities_created": 1,
+  "emails_sent": 4,
+  "deals_won": 0,
+  "revenue_collected": 0,
+  "pipeline_value": 50000
+}
