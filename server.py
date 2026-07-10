@@ -153,6 +153,8 @@ class Handler(http.server.BaseHTTPRequestHandler):
             self.send_json(200, {"status": "ok"})
         elif parsed.path == "/api/ghl-status":
             self.handle_ghl_status()
+        elif parsed.path == "/api/ghl-contact-test":
+            self.handle_ghl_contact_test()
         elif parsed.path == "/api/1m-status":
             self.handle_1m_status()
         else:
@@ -162,6 +164,8 @@ class Handler(http.server.BaseHTTPRequestHandler):
         parsed = urlparse(self.path)
         if parsed.path == "/api/submit":
             self.handle_submit()
+        elif parsed.path == "/api/ghl-contact-test":
+            self.handle_ghl_contact_test()
         else:
             self.send_error(404)
 
@@ -193,6 +197,71 @@ class Handler(http.server.BaseHTTPRequestHandler):
 
         # Do not create real test data here, so /api/ghl-status stays side-effect free.
         self.send_json(200, auth_info)
+
+    def handle_ghl_contact_test(self):
+        if not GHL_TOKEN:
+            self.send_json(400, {"success": False, "message": "GHL_TOKEN missing"})
+            return
+
+        # Read request body for optional test fields
+        content_length = int(self.headers.get("Content-Length", 0))
+        body = self.rfile.read(content_length) if content_length else b""
+        try:
+            data = json.loads(body) if body else {}
+        except json.JSONDecodeError:
+            data = {}
+
+        # Build a harmless test contact unless caller provides fields
+        from datetime import datetime as _dt
+        suffix = _dt.now().strftime("%Y%m%d%H%M%S")
+        test_payload = {
+            "firstName": data.get("firstName", "API"),
+            "lastName": data.get("lastName", f"Test-{suffix}"),
+            "email": data.get("email", f"ghl-api-test-{suffix}@example.com"),
+            "phone": data.get("phone", f"555-01{suffix[-4:]}"),
+            "locationId": LOCATION_ID,
+            "tags": ["Time Freedom Landing Page", "Lead", "API-Test"],
+        }
+        revenue = data.get("revenue")
+        hours = data.get("hours")
+        if revenue:
+            test_payload["tags"].append(f"Revenue:{revenue}")
+        if hours:
+            test_payload["tags"].append(f"Hours:{hours}")
+
+        contact_result = ghl_request("POST", "/contacts/", test_payload)
+        if not contact_result or not contact_result.get("contact"):
+            self.send_json(500, {
+                "success": False,
+                "message": "Contact creation failed",
+                "raw": contact_result,
+            })
+            return
+
+        contact = contact_result["contact"]
+        contact_id = contact.get("id", "")
+
+        # Try to create an opportunity in AGS Sales pipeline
+        opp_result = ghl_request(
+            "POST",
+            "/opportunities/",
+            {
+                "name": f"Time Freedom Coaching - {contact.get('firstName', 'Test')} {contact.get('lastName', '')}",
+                "status": "open",
+                "contactId": contact_id,
+                "locationId": LOCATION_ID,
+                "pipelineId": PIPELINE_ID,
+                "monetaryValue": 50000,
+            },
+        )
+
+        self.send_json(200, {
+            "success": True,
+            "contact": contact,
+            "opportunity": opp_result.get("opportunity") if opp_result else None,
+            "raw_contact_response": contact_result,
+            "raw_opportunity_response": opp_result,
+        })
 
     def handle_1m_status(self):
         self.send_json(200, get_progress())
