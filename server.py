@@ -229,7 +229,7 @@ class Handler(http.server.BaseHTTPRequestHandler):
         if hours:
             test_payload["tags"].append(f"Hours:{hours}")
 
-        contact_result = ghl_request("POST", "/contacts/", test_payload)
+        contact_result = create_contact(test_payload)
         if not contact_result or not contact_result.get("contact"):
             self.send_json(500, {
                 "success": False,
