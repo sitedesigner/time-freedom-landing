@@ -157,6 +157,10 @@ class Handler(http.server.BaseHTTPRequestHandler):
             self.handle_ghl_contact_test()
         elif parsed.path == "/api/1m-status":
             self.handle_1m_status()
+        elif parsed.path == "/tracker-dashboard":
+            self.serve_file("tracker-dashboard.html", "text/html")
+        elif parsed.path == "/tracker/leads":
+            self.handle_tracker_leads()
         else:
             self.send_error(404)
 
@@ -267,6 +271,11 @@ class Handler(http.server.BaseHTTPRequestHandler):
 
     def handle_1m_status(self):
         self.send_json(200, get_progress())
+
+    def handle_tracker_leads(self):
+        from tracker import load_tracker
+        tracker = load_tracker()
+        self.send_json(200, tracker)
 
     def handle_book(self):
         content_length = int(self.headers.get("Content-Length", 0))

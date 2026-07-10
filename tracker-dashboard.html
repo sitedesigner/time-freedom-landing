@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Time Freedom Tracker | GoTech</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: #0a0a0a;
+            color: #ffffff;
+            min-height: 100vh;
+            padding: 40px 20px;
+        }
+        .wrap { max-width: 960px; margin: 0 auto; }
+        .brand {
+            color: #a855f7;
+            font-size: 12px;
+            letter-spacing: 4px;
+            text-transform: uppercase;
+            font-weight: 800;
+            margin-bottom: 18px;
+            display: inline-block;
+            border: 1px solid rgba(168,85,247,0.35);
+            padding: 10px 16px;
+            border-radius: 999px;
+            background: rgba(168,85,247,0.08);
+        }
+        h1 {
+            font-size: clamp(30px, 4vw, 48px);
+            font-weight: 900;
+            line-height: 1.1;
+            margin-bottom: 30px;
+            letter-spacing: -1px;
+        }
+        h1 .gradient-text {
+            background: linear-gradient(180deg, #ffffff 30%, #a855f7 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 16px;
+            margin-bottom: 30px;
+        }
+        .stat {
+            background: #141414;
+            border: 1px solid #222;
+            border-radius: 16px;
+            padding: 22px;
+        }
+        .stat .label {
+            color: #888;
+            font-size: 12px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            font-weight: 700;
+        }
+        .stat .value {
+            color: #fff;
+            font-size: 28px;
+            font-weight: 900;
+            margin-top: 8px;
+        }
+        .stat .value.purple { color: #a855f7; }
+        .stat .value.green { color: #4ade80; }
+        .progress {
+            background: #141414;
+            border: 1px solid #222;
+            border-radius: 16px;
+            padding: 22px;
+            margin-bottom: 30px;
+        }
+        .progress-bar {
+            height: 18px;
+            background: #222;
+            border-radius: 999px;
+            overflow: hidden;
+            margin-top: 12px;
+        }
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #a855f7, #c084fc);
+            border-radius: 999px;
+            transition: width 0.5s ease;
+        }
+        .leads-table {
+            background: #141414;
+            border: 1px solid #222;
+            border-radius: 16px;
+            padding: 22px;
+            overflow-x: auto;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            color: #c0c0c0;
+            font-size: 14px;
+        }
+        th {
+            text-align: left;
+            color: #888;
+            font-size: 12px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            padding: 10px 8px;
+            border-bottom: 1px solid #222;
+        }
+        td {
+            padding: 10px 8px;
+            border-bottom: 1px solid #1a1a1a;
+        }
+        tr:last-child td { border-bottom: none; }
+        .tag {
+            display: inline-block;
+            background: rgba(168,85,247,0.15);
+            color: #c084fc;
+            border: 1px solid rgba(168,85,247,0.35);
+            border-radius: 999px;
+            padding: 3px 8px;
+            font-size: 11px;
+            font-weight: 700;
+            margin-right: 4px;
+        }
+        .revenue { color: #4ade80; font-weight: 700; }
+        .footer {
+            color: #555;
+            font-size: 13px;
+            margin-top: 10px;
+        }
+        .refresh {
+            color: #a855f7;
+            font-size: 13px;
+            cursor: pointer;
+            text-decoration: underline;
+            margin-top: 12px;
+            display: inline-block;
+        }
+    </style>
+</head>
+<body>
+    <div class="wrap">
+        <div class="brand">AI + Faith</div>
+        <h1><span class="gradient-text">$1M Liquid</span><br>Time Freedom Tracker</h1>
+
+        <div class="stats">
+            <div class="stat">
+                <div class="label">Goal</div>
+                <div class="value">$1,000,000</div>
+            </div>
+            <div class="stat">
+                <div class="label">Revenue Collected</div>
+                <div class="value green" id="revenue">$0</div>
+            </div>
+            <div class="stat">
+                <div class="label">Pipeline Value</div>
+                <div class="value purple" id="pipeline">$0</div>
+            </div>
+            <div class="stat">
+                <div class="label">Total Exposure</div>
+                <div class="value" id="exposure">$0</div>
+            </div>
+            <div class="stat">
+                <div class="label">Leads</div>
+                <div class="value" id="leads">0</div>
+            </div>
+            <div class="stat">
+                <div class="label">Opportunities</div>
+                <div class="value purple" id="opps">0</div>
+            </div>
+        </div>
+
+        <div class="progress">
+            <div style="display:flex; justify-content:space-between; align-items:center;">
+                <strong style="color:#fff;">Progress to $1M</strong>
+                <span style="color:#a855f7; font-weight:700;" id="pct">0%</span>
+            </div>
+            <div class="progress-bar">
+                <div class="progress-fill" id="progress-fill" style="width:0%"></div>
+            </div>
+            <p style="color:#888; font-size:13px; margin-top:10px;">
+                Revenue collected + open pipeline value. Updated in near-real time.
+            </p>
+        </div>
+
+        <div class="leads-table">
+            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:14px;">
+                <strong style="color:#fff;">Recent Leads</strong>
+                <span class="refresh" onclick="location.reload()">Refresh</span>
+            </div>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Email</th>
+                        <th>Revenue</th>
+                        <th>Hours</th>
+                        <th>Challenge</th>
+                        <th>Status</th>
+                    </tr>
+                </thead>
+                <tbody id="leads-body">
+                    <tr><td colspan="6" style="color:#666;">Loading leads...</td></tr>
+                </tbody>
+            </table>
+        </div>
+
+        <p class="footer">Data pulled from landing page tracker. For dashboard access, use localhost:8082 (Q3 Command Center) or localhost:7777 (GoTech Command Center).</p>
+    </div>
+
+    <script>
+        function fmtMoney(n) {
+            return "$" + Number(n || 0).toLocaleString();
+        }
+        function fetchJSON(url) {
+            return fetch(url).then(function(r){ return r.json(); });
+        }
+        function renderProgress(data) {
+            document.getElementById("revenue").textContent = fmtMoney(data.revenue_collected);
+            document.getElementById("pipeline").textContent = fmtMoney(data.pipeline_value);
+            document.getElementById("exposure").textContent = fmtMoney(data.total_exposure);
+            document.getElementById("pct").textContent = data.total_pct.toFixed(2) + "%";
+            document.getElementById("progress-fill").style.width = Math.min(data.total_pct, 100) + "%";
+            document.getElementById("leads").textContent = data.leads_count;
+            document.getElementById("opps").textContent = data.opportunities_created;
+        }
+        function renderLeads(leads) {
+            var tbody = document.getElementById("leads-body");
+            if (!leads || !leads.length) {
+                tbody.innerHTML = "<tr><td colspan='6' style='color:#666;'>No leads yet</td></tr>";
+                return;
+            }
+            var html = "";
+            for (var i = 0; i < Math.min(leads.length, 50); i++) {
+                var l = leads[i];
+                html += "<tr>";
+                html += "<td style='color:#fff; font-weight:600;'>" + escapeHtml(l.name || "") + "</td>";
+                html += "<td>" + escapeHtml(l.email || "") + "</td>";
+                html += "<td class='revenue'>" + escapeHtml(l.revenue || "-") + "</td>";
+                html += "<td>" + escapeHtml(l.hours || "-") + "</td>";
+                html += "<td>" + escapeHtml((l.challenge || "").slice(0, 80)) + "</td>";
+                html += "<td>" + escapeHtml(l.contact_id ? "Contact Created" : "Pending") + "</td>";
+                html += "</tr>";
+            }
+            tbody.innerHTML = html;
+        }
+        function escapeHtml(t) {
+            return String(t || "").replace(/[&<>"']/g, function(m){ return {"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;","'":"&#39;"}[m]; });
+        }
+        (function(){
+            fetchJSON("/api/1m-status")
+                .then(renderProgress)
+                .catch(function(){ document.getElementById("pct").textContent = "Offline"; });
+
+            fetchJSON("/tracker/leads")
+                .then(function(data){
+                    var leads = data.leads || data || [];
+                    renderLeads(Array.isArray(leads) ? leads.slice().reverse() : []);
+                })
+                .catch(function(){
+                    document.getElementById("leads-body").innerHTML = "<tr><td colspan='6' style='color:#666;'>Unavailable</td></tr>";
+                });
+        })();
+    </script>
+</body>
+</html>
