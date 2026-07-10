@@ -41,7 +41,7 @@ def ghl_request(method, endpoint, data=None):
         "Content-Type": "application/json",
         "Version": "2021-07-28",
         "Accept": "application/json",
-        "User-Agent": "TimeFreedom-Landing/1.0",
+        "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36",
     }
     body = json.dumps(data).encode() if data else None
     req = urllib.request.Request(url, data=body, method=method, headers=headers)
@@ -166,6 +166,8 @@ class Handler(http.server.BaseHTTPRequestHandler):
             self.handle_submit()
         elif parsed.path == "/api/ghl-contact-test":
             self.handle_ghl_contact_test()
+        elif parsed.path == "/api/book":
+            self.handle_book()
         else:
             self.send_error(404)
 
@@ -265,6 +267,69 @@ class Handler(http.server.BaseHTTPRequestHandler):
 
     def handle_1m_status(self):
         self.send_json(200, get_progress())
+
+    def handle_book(self):
+        content_length = int(self.headers.get("Content-Length", 0))
+        body = self.rfile.read(content_length) if content_length else b""
+        try:
+            data = json.loads(body) if body else {}
+        except json.JSONDecodeError:
+            self.send_json(400, {"success": False, "message": "Invalid JSON"})
+            return
+
+        day = data.get("day", "").strip()
+        time_block = data.get("time", "").strip()
+        notes = data.get("notes", "").strip()
+        if not day or not time_block:
+            self.send_json(400, {"success": False, "message": "Day and time required"})
+            return
+
+        # Booking request received - update GHL and notify David
+        booking_note = f"Booking request: {day} {time_block}. Notes: {notes or 'None'}"
+        print(f"Booking request: {booking_note}")
+
+        # Update opportunity with booking preference
+        # This is best-effort; if it fails, we still return success to user
+        try:
+            from tracker import load_tracker, save_tracker
+            tracker = load_tracker()
+            leads = tracker.get("leads", [])
+            if leads:
+                last_lead = leads[-1]
+                contact_id = last_lead.get("contact_id")
+                opportunity_id = last_lead.get("opportunity_id")
+                if contact_id and opportunity_id:
+                    # Try to update opportunity with booking note
+                    ghl_request("PUT", f"/opportunities/{opportunity_id}", {
+                        "locationId": LOCATION_ID,
+                        "notes": booking_note,
+                    })
+        except Exception as e:
+            print(f"Booking GHL update error: {e}")
+
+        # Send notification email to David
+        try:
+            email_body = f"New booking request: {day} {time_block}. Notes: {notes or 'None'}"
+            send_welcome_email("David", GMAIL_USER)
+            # Override the email content for booking notification
+            import ssl
+            from email.mime.text import MIMEText
+            msg = MIMEText(f"Booking request received: {day} {time_block}. Notes: {notes or 'None'}")
+            msg["Subject"] = "New Time Freedom Booking Request"
+            msg["From"] = f"David Goecke <{GMAIL_USER}>"
+            msg["To"] = GMAIL_USER
+            context = ssl.create_default_context()
+            with smtplib.SMTP_SSL("smtp.gmail.com", 465, context=context) as server:
+                server.login(GMAIL_USER, GMAIL_APP_PASSWORD)
+                server.sendmail(GMAIL_USER, GMAIL_USER, msg.as_string())
+        except Exception as e:
+            print(f"Booking notification email error: {e}")
+
+        self.send_json(200, {
+            "success": True,
+            "message": "Booking request sent. I'll reply within 24 hours with your Time Freedom Clarity Call link.",
+            "booking": {"day": day, "time": time_block, "notes": notes},
+        })
 
     def handle_submit(self):
         content_length = int(self.headers.get("Content-Length", 0))
