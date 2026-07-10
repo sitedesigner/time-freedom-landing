@@ -7,6 +7,7 @@ import urllib.error
 import smtplib
 import os
 import ssl
+import threading
 from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
 from urllib.parse import urlparse
@@ -73,18 +74,20 @@ def create_contact(data):
     if result and result.get("contact"):
         return result
 
-    # Fallback: search by email/phone and reuse existing contact instead of failing on duplicate
+    # Fallback: GHL blocks duplicates by unique fields; search existing contact and reuse it
     for field in ["email", "phone"]:
         value = data.get(field)
         if not value:
             continue
-        search = ghl_request(
-            "GET",
-            f"/contacts/?locationId={LOCATION_ID}&{field}={urllib.parse.quote(value)}",
-        )
-        if isinstance(search, dict) and search.get("contacts"):
-            contact = search["contacts"][0]
-            return {"contact": contact}
+        try:
+            search = ghl_request(
+                "GET",
+                f"/contacts/?locationId={LOCATION_ID}&{field}={urllib.parse.quote(value)}",
+            )
+            if isinstance(search, dict) and search.get("contacts"):
+                return {"contact": search["contacts"][0]}
+        except Exception:
+            continue
 
     return result
 
@@ -205,33 +208,36 @@ class Handler(http.server.BaseHTTPRequestHandler):
             self.send_json(400, {"success": False, "message": "Name and email required"})
             return
 
-        contact_result = create_contact(data)
-        if not contact_result:
-            self.send_json(500, {"success": False, "message": "Failed to create contact"})
-            return
+        # Respond to client immediately, then process integrations asynchronously
+        self.send_json(200, {
+            "success": True,
+            "message": "Application submitted successfully",
+            "contactId": "pending",
+            "paymentLink": STRIPE_PAYMENT_LINK,
+        })
 
-        contact_id = contact_result.get("contact", {}).get("id", "unknown")
-        full_name = f"{data.get('firstName', '')} {data.get('lastName', '')}".strip()
-        print(f"Contact created: {data['email']} (ID: {contact_id})")
+        def process_async(payload=data):
+            try:
+                contact_result = create_contact(payload)
+                contact_id = (contact_result or {}).get("contact", {}).get("id", "unknown")
+                full_name = f"{payload.get('firstName', '')} {payload.get('lastName', '')}".strip()
+                if contact_result and contact_result.get("contact"):
+                    print(f"Contact created: {payload['email']} (ID: {contact_id})")
+                else:
+                    print(f"Contact failed or fallback failed for {payload['email']}")
 
-        opp_result = create_opportunity(contact_id, full_name)
-        opp_id = None
-        if opp_result:
-            opp_id = opp_result.get("opportunity", {}).get("id", "unknown")
-            print(f"Opportunity created: {opp_id} ($50K)")
+                opp_result = create_opportunity(contact_id, full_name)
+                opp_id = None
+                if opp_result:
+                    opp_id = opp_result.get("opportunity", {}).get("id", "unknown")
+                    print(f"Opportunity created: {opp_id} ($50K)")
 
-        send_welcome_email(data["firstName"], data["email"])
-        add_lead(data, contact_id=contact_id, opportunity_id=opp_id)
+                send_welcome_email(payload["firstName"], payload["email"])
+                add_lead(payload, contact_id=contact_id, opportunity_id=opp_id)
+            except Exception as e:
+                print(f"Async processing error: {e}")
 
-        self.send_json(
-            200,
-            {
-                "success": True,
-                "message": "Application submitted successfully",
-                "contactId": contact_id,
-                "paymentLink": STRIPE_PAYMENT_LINK,
-            },
-        )
+        threading.Thread(target=process_async, daemon=True).start()
 
     def serve_file(self, filename, content_type):
         filepath = os.path.join(os.path.dirname(os.path.abspath(__file__)), filename)
