@@ -147,6 +147,8 @@ class Handler(http.server.BaseHTTPRequestHandler):
             self.serve_file("index.html", "text/html")
         elif parsed.path == "/deal-room":
             self.serve_file("deal-room.html", "text/html")
+        elif parsed.path == "/confirmation":
+            self.serve_file("confirmation.html", "text/html")
         elif parsed.path == "/health":
             self.send_json(200, {"status": "ok"})
         elif parsed.path == "/api/ghl-status":

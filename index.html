@@ -270,10 +270,7 @@
                     });
                     var result = await res.json();
                     if (result.success) {
-                        status.textContent = 'Application received. Check your email.';
-                        status.style.color = '#a855f7';
-                        form.reset();
-                        btn.textContent = 'Sent';
+                        window.location.replace('/confirmation' + (result.paymentLink ? '?paymentLink=' + encodeURIComponent(result.paymentLink) : ''));
                     } else {
                         status.textContent = result.message || 'Something went wrong. Try again.';
                         status.style.color = '#ef4444';

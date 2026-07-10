@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Confirmed | Time Freedom</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: #0a0a0a;
+            color: #ffffff;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 40px 20px;
+        }
+        .wrap {
+            max-width: 640px;
+            text-align: center;
+        }
+        .brand {
+            color: #a855f7;
+            font-size: 12px;
+            letter-spacing: 4px;
+            text-transform: uppercase;
+            font-weight: 800;
+            margin-bottom: 18px;
+            display: inline-block;
+            border: 1px solid rgba(168,85,247,0.35);
+            padding: 10px 16px;
+            border-radius: 999px;
+            background: rgba(168,85,247,0.08);
+        }
+        h1 {
+            font-size: clamp(30px, 4vw, 48px);
+            font-weight: 900;
+            line-height: 1.1;
+            margin-bottom: 16px;
+            letter-spacing: -1px;
+        }
+        h1 .gradient-text {
+            background: linear-gradient(180deg, #ffffff 30%, #a855f7 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .sub {
+            color: #c0c0c0;
+            font-size: 17px;
+            line-height: 1.6;
+            margin-bottom: 26px;
+        }
+        .card {
+            background: #141414;
+            border: 1px solid #222;
+            border-radius: 16px;
+            padding: 24px;
+            margin-bottom: 18px;
+            text-align: left;
+        }
+        .video-placeholder {
+            background: #0f0f23;
+            border: 1px dashed #2d2d44;
+            border-radius: 12px;
+            padding: 18px;
+            color: #888;
+            font-size: 14px;
+            margin-bottom: 18px;
+        }
+        .next {
+            color: #a855f7;
+            font-weight: 700;
+            font-size: 15px;
+            margin-top: 6px;
+        }
+        .footer {
+            color: #555;
+            font-size: 13px;
+            margin-top: 10px;
+        }
+        a { color: #a855f7; }
+    </style>
+</head>
+<body>
+    <div class="wrap">
+        <div class="brand">AI + Faith</div>
+        <h1><span class="gradient-text">Application received.</span><br>Your next 90 days start now.</h1>
+        <p class="sub">I'll review your revenue, hours, and workflow before we book.<br>If we are a fit, I'll send your Calendly link within 24 hours.</p>
+
+        <div class="video-placeholder" id="video-block">
+            [VIDEO GOES HERE]
+        </div>
+
+        <div class="card">
+            <strong style="color:#fff;">What happens next</strong>
+            <ol style="color:#c0c0c0; padding-left: 18px; margin-top:10px; line-height:1.7; font-size:15px;">
+                <li>I review your answers and current revenue/hours profile.</li>
+                <li>If you qualify, I send a Calendly link for your Time Freedom Clarity Call.</li>
+                <li>On the call, we map your leverage gaps and 90-day execution plan.</li>
+            </ol>
+            <p class="next">Check your email. Talk soon, David Goecke <br> <a href="tel:425-466-8650">425-466-8650</a></p>
+        </div>
+
+        <p class="footer">If you need anything, reply to the email or call me directly.</p>
+    </div>
+
+    <script>
+        // Replace video placeholder with embedded video if URL is provided
+        (function(){
+            var params = new URLSearchParams(window.location.search);
+            var video = params.get('video');
+            if (video) {
+                var block = document.getElementById('video-block');
+                block.innerHTML = '<iframe width="100%" height="360" src="' + video + '" frameborder="0" allow="autoplay; fullscreen" allowfullscreen style="border-radius:12px;"></iframe>';
+            }
+        })();
+    </script>
+</body>
+</html>
