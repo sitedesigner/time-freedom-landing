@@ -3,7 +3,7 @@
 import json, os
 from datetime import datetime
 
-TRACKER_PATH = os.path.expanduser("~/time-freedom-landing/1m-tracker.json")
+TRACKER_PATH = os.path.expanduser("~/Documents/GoTechSolutions/time-freedom-landing/1m-tracker.json")
 
 def load_tracker():
     if os.path.exists(TRACKER_PATH):
@@ -33,6 +33,9 @@ def add_lead(data, contact_id=None, opportunity_id=None):
         "name": f"{data.get('firstName', '')} {data.get('lastName', '')}".strip(),
         "email": data.get("email", ""),
         "phone": data.get("phone", ""),
+        "company": data.get("company", ""),
+        "revenue": data.get("revenue", ""),
+        "hours": data.get("hours", ""),
         "challenge": data.get("challenge", ""),
         "contact_id": contact_id,
         "opportunity_id": opportunity_id,
