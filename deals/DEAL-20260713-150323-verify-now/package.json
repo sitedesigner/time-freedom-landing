@@ -1,0 +1,19 @@
+{
+  "deal_id": "DEAL-20260713-150323-verify-now",
+  "lead_name": "Verify Now",
+  "email": "verify-2026-07-06@example.com",
+  "revenue": "100k-250k",
+  "hours": "20-40",
+  "challenge": "",
+  "contact_id": "lYaoR3he4Y0MBxuPyY4R",
+  "opportunity_id": null,
+  "deal_value": 50000,
+  "stage": "Qualified - Send Booking",
+  "next_action": "Review application and send booking link",
+  "files": [
+    "/Users/davidgo/Documents/GoTechSolutions/time-freedom-landing/deals/DEAL-20260713-150323-verify-now/deal-summary.md",
+    "/Users/davidgo/Documents/GoTechSolutions/time-freedom-landing/deals/DEAL-20260713-150323-verify-now/call-notes.md",
+    "/Users/davidgo/Documents/GoTechSolutions/time-freedom-landing/deals/DEAL-20260713-150323-verify-now/90-day-plan.md"
+  ],
+  "created": "2026-07-13T15:03:23.306027"
+}

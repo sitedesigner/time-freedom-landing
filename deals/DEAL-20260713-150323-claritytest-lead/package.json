@@ -1,0 +1,19 @@
+{
+  "deal_id": "DEAL-20260713-150323-claritytest-lead",
+  "lead_name": "ClarityTest Lead",
+  "email": "davidgoecke+clarity@bizrunner.com",
+  "revenue": "250k-500k",
+  "hours": "40-60",
+  "challenge": "Scaling fast but losing personal time.",
+  "contact_id": "YlxGyCq71DZBKCyQe0qY",
+  "opportunity_id": "YdDZnUD4Y9zj1VGNUR9U",
+  "deal_value": 50000,
+  "stage": "Hot Lead - Book Now",
+  "next_action": "Review application and send booking link",
+  "files": [
+    "/Users/davidgo/Documents/GoTechSolutions/time-freedom-landing/deals/DEAL-20260713-150323-claritytest-lead/deal-summary.md",
+    "/Users/davidgo/Documents/GoTechSolutions/time-freedom-landing/deals/DEAL-20260713-150323-claritytest-lead/call-notes.md",
+    "/Users/davidgo/Documents/GoTechSolutions/time-freedom-landing/deals/DEAL-20260713-150323-claritytest-lead/90-day-plan.md"
+  ],
+  "created": "2026-07-13T15:03:23.307556"
+}

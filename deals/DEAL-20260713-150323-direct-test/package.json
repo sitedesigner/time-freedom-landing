@@ -1,0 +1,19 @@
+{
+  "deal_id": "DEAL-20260713-150323-direct-test",
+  "lead_name": "Direct Test",
+  "email": "direct-landing-test-2026-07-06@example.com",
+  "revenue": "250k-500k",
+  "hours": "40-60",
+  "challenge": "",
+  "contact_id": "J7WOOfb7ndfktBH9QtKM",
+  "opportunity_id": null,
+  "deal_value": 50000,
+  "stage": "Hot Lead - Book Now",
+  "next_action": "Review application and send booking link",
+  "files": [
+    "/Users/davidgo/Documents/GoTechSolutions/time-freedom-landing/deals/DEAL-20260713-150323-direct-test/deal-summary.md",
+    "/Users/davidgo/Documents/GoTechSolutions/time-freedom-landing/deals/DEAL-20260713-150323-direct-test/call-notes.md",
+    "/Users/davidgo/Documents/GoTechSolutions/time-freedom-landing/deals/DEAL-20260713-150323-direct-test/90-day-plan.md"
+  ],
+  "created": "2026-07-13T15:03:23.304065"
+}

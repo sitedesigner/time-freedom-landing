@@ -4,9 +4,9 @@ import json, os, re
 from datetime import datetime
 from pathlib import Path
 
-BASE = Path(__file__).resolve().parent.parent / "time-freedom-landing"
-DEALS_DIR = BASE / "deals"
-TRACKER_PATH = BASE / "1m-tracker.json"
+BASE = Path(__file__).resolve().parent
+DEALS_DIR = Path.home() / "Documents" / "GoTechSolutions" / "time-freedom-landing" / "deals"
+TRACKER_PATH = Path.home() / "Documents" / "GoTechSolutions" / "time-freedom-landing" / "1m-tracker.json"
 
 
 def load_json(path):

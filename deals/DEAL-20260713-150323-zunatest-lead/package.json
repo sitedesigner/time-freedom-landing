@@ -1,0 +1,19 @@
+{
+  "deal_id": "DEAL-20260713-150323-zunatest-lead",
+  "lead_name": "ZunaTest Lead",
+  "email": "davidgoecke+test2@bizrunner.com",
+  "revenue": "500k-1m",
+  "hours": "60-80",
+  "challenge": "Drowning in client work and admin, need leverage.",
+  "contact_id": "E5DqKdRQdjm1wSSdvoLF",
+  "opportunity_id": null,
+  "deal_value": 50000,
+  "stage": "Hot Lead - Book Now",
+  "next_action": "Review application and send booking link",
+  "files": [
+    "/Users/davidgo/Documents/GoTechSolutions/time-freedom-landing/deals/DEAL-20260713-150323-zunatest-lead/deal-summary.md",
+    "/Users/davidgo/Documents/GoTechSolutions/time-freedom-landing/deals/DEAL-20260713-150323-zunatest-lead/call-notes.md",
+    "/Users/davidgo/Documents/GoTechSolutions/time-freedom-landing/deals/DEAL-20260713-150323-zunatest-lead/90-day-plan.md"
+  ],
+  "created": "2026-07-13T15:03:23.306832"
+}

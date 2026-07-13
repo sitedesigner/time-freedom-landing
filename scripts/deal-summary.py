@@ -10,8 +10,8 @@ import os
 from datetime import datetime
 from pathlib import Path
 
-BASE = Path(__file__).resolve().parent.parent / "time-freedom-landing"
-TRACKER_PATH = BASE / "1m-tracker.json"
+BASE = Path(__file__).resolve().parent
+TRACKER_PATH = Path.home() / "Documents" / "GoTechSolutions" / "time-freedom-landing" / "1m-tracker.json"
 DEALS_DIR = BASE / "deals"
 
 
