@@ -172,6 +172,8 @@ class Handler(http.server.BaseHTTPRequestHandler):
             self.handle_ghl_contact_test()
         elif parsed.path == "/api/book":
             self.handle_book()
+        elif parsed.path == "/api/deal-close":
+            self.handle_deal_close()
         else:
             self.send_error(404)
 
@@ -338,6 +340,35 @@ class Handler(http.server.BaseHTTPRequestHandler):
             "success": True,
             "message": "Booking request sent. I'll reply within 24 hours with your Time Freedom Clarity Call link.",
             "booking": {"day": day, "time": time_block, "notes": notes},
+        })
+
+    def handle_deal_close(self):
+        content_length = int(self.headers.get("Content-Length", 0))
+        body = self.rfile.read(content_length) if content_length else b""
+        try:
+            data = json.loads(body) if body else {}
+        except json.JSONDecodeError:
+            self.send_json(400, {"success": False, "message": "Invalid JSON"})
+            return
+
+        lead = data.get("lead") or {}
+        close_amount = data.get("amount", 50000)
+        if not lead.get("email"):
+            self.send_json(400, {"success": False, "message": "Lead email required"})
+            return
+
+        try:
+            from scripts.deal_close import process_deal_close
+            package = process_deal_close(lead, close_amount)
+        except Exception as e:
+            print(f"Deal close error: {e}")
+            self.send_json(500, {"success": False, "message": str(e)})
+            return
+
+        self.send_json(200, {
+            "success": True,
+            "message": "Deal closed. Summary generated.",
+            "deal": package,
         })
 
     def handle_submit(self):
