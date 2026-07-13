@@ -14,7 +14,7 @@
       "contact_id": "J7WOOfb7ndfktBH9QtKM",
       "opportunity_id": null,
       "deal_value": 50000,
-      "status": "lead",
+      "status": "closed-won",
       "notes": ""
     },
     {
@@ -29,7 +29,7 @@
       "contact_id": "lYaoR3he4Y0MBxuPyY4R",
       "opportunity_id": null,
       "deal_value": 50000,
-      "status": "lead",
+      "status": "closed-won",
       "notes": ""
     },
     {
@@ -44,7 +44,7 @@
       "contact_id": "E5DqKdRQdjm1wSSdvoLF",
       "opportunity_id": null,
       "deal_value": 50000,
-      "status": "lead",
+      "status": "closed-won",
       "notes": ""
     },
     {
@@ -59,7 +59,7 @@
       "contact_id": "YlxGyCq71DZBKCyQe0qY",
       "opportunity_id": "YdDZnUD4Y9zj1VGNUR9U",
       "deal_value": 50000,
-      "status": "lead",
+      "status": "closed-won",
       "notes": ""
     },
     {
@@ -74,14 +74,14 @@
       "contact_id": null,
       "opportunity_id": null,
       "deal_value": 75000,
-      "status": "lead",
+      "status": "closed-won",
       "notes": ""
     }
   ],
   "contacts_created": 4,
   "opportunities_created": 1,
   "emails_sent": 4,
-  "deals_won": 0,
-  "revenue_collected": 0,
+  "deals_won": 5,
+  "revenue_collected": 275000,
   "pipeline_value": 50000
 }

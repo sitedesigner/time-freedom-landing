@@ -1,0 +1,11 @@
+{
+  "deal_id": "DEAL-20260713-150551-verify-now",
+  "lead_name": "Verify Now",
+  "email": "verify-2026-07-06@example.com",
+  "deal_value": 50000,
+  "status": "closed-won",
+  "files": [
+    "/Users/davidgo/Documents/GoTechSolutions/time-freedom-landing/deals/DEAL-20260713-150551-verify-now/deal-summary.md"
+  ],
+  "created": "2026-07-13T15:05:51.168374"
+}
