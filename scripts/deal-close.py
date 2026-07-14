@@ -125,6 +125,18 @@ def process_deal_close(lead, close_amount=50000):
             lead_entry["deal_value"] = close_amount
             break
     save_json(TRACKER_PATH, tracker)
+
+    # Auto-push to GitHub
+    try:
+        repo_path = BASE.parent
+        import subprocess
+        subprocess.run(["git", "add", "-A"], cwd=repo_path, capture_output=True)
+        subprocess.run(["git", "commit", "-m", f"DEAL: {lead.get('name','Lead')} ${close_amount:,}"], cwd=repo_path, capture_output=True)
+        subprocess.run(["git", "push", "origin", "master"], cwd=repo_path, capture_output=True)
+        print(f"Auto-pushed deal {package['deal_id']} to GitHub")
+    except Exception as e:
+        print(f"GitHub auto-push error: {e}")
+
     return package
 
 
