@@ -76,11 +76,37 @@
       "deal_value": 75000,
       "status": "closed-won",
       "notes": ""
+    },
+    {
+      "timestamp": "2026-07-14T18:54:05.284033",
+      "name": "David Test",
+      "email": "davidgoecke+restart@bizrunner.com",
+      "phone": "425-466-8650",
+      "company": "GoTech",
+      "revenue": "+$500K",
+      "hours": "<20 hrs",
+      "challenge": "Scale",
+      "contact_id": "unknown",
+      "opportunity_id": null,
+      "deal_value": 50000
+    },
+    {
+      "timestamp": "2026-07-14T18:56:46.525773",
+      "name": "David Test",
+      "email": "davidgoecke+localtest@bizrunner.com",
+      "phone": "425-466-8650",
+      "company": "GoTech",
+      "revenue": "+$500K",
+      "hours": "<20 hrs",
+      "challenge": "Scale",
+      "contact_id": "unknown",
+      "opportunity_id": null,
+      "deal_value": 50000
     }
   ],
-  "contacts_created": 4,
+  "contacts_created": 6,
   "opportunities_created": 1,
-  "emails_sent": 4,
+  "emails_sent": 6,
   "deals_won": 5,
   "revenue_collected": 275000,
   "pipeline_value": 50000

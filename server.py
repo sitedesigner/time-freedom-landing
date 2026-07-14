@@ -70,11 +70,7 @@ def create_contact(data):
     if hours:
         payload["tags"].append(f"Hours:{hours}")
 
-    result = ghl_request("POST", "/contacts/", payload)
-    if result and result.get("contact"):
-        return result
-
-    # Fallback: GHL blocks duplicates by unique fields; search existing contact and reuse it
+    # Search first to avoid duplicate POST errors
     for field in ["email", "phone"]:
         value = data.get(field)
         if not value:
@@ -85,10 +81,22 @@ def create_contact(data):
                 f"/contacts/?locationId={LOCATION_ID}&{field}={urllib.parse.quote(value)}",
             )
             if isinstance(search, dict) and search.get("contacts"):
-                return {"contact": search["contacts"][0]}
+                existing = search["contacts"][0]
+                existing_tags = existing.get("tags", [])
+                desired_tags = list(set(existing_tags + payload["tags"]))
+                if desired_tags != existing_tags:
+                    ghl_request(
+                        "PUT",
+                        f"/contacts/{existing['id']}",
+                        {"tags": desired_tags},
+                    )
+                return {"contact": existing}
         except Exception:
             continue
 
+    result = ghl_request("POST", "/contacts/", payload)
+    if result and result.get("contact"):
+        return result
     return result
 
 
