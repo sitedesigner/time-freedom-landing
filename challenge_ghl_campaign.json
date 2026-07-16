@@ -1,0 +1,21 @@
+{
+  "campaign_name": "2027 NY 5-Day Time Freedom Reset",
+  "challenge_dates": "2027-01-04 to 2027-01-08",
+  "live_session_time": "09:00 ET",
+  "tags": [
+    "5-Day Challenge 2027",
+    "Challenge Lead",
+    "NY Challenge Jan 2027"
+  ],
+  "sources": [
+    "linkedin",
+    "email",
+    "yt-description",
+    "spotify-show-notes"
+  ],
+  "lead_form_url": "https://discerning-alignment-production-1b96.up.railway.app/challenge",
+  "welcome_email_subject": "Your 5-Day Time Freedom Reset starts Jan 4",
+  "welcome_email_cta": "Join private group + download prep workbook",
+  "daily_reminder_subject": "Day {N} is tomorrow at 9am ET",
+  "sales_pitch_subject": "Want me to build this system for you?"
+}

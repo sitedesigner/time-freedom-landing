@@ -1,0 +1,310 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>5-Day Time Freedom Reset | Jan 4-8, 2027</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: #0a0a0a;
+            color: #ffffff;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+        .bg-glow {
+            position: fixed;
+            top: -20vh;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 80vw;
+            height: 80vh;
+            background: radial-gradient(circle, rgba(168,85,247,0.25) 0%, rgba(10,10,10,0) 70%);
+            pointer-events: none;
+            z-index: 0;
+        }
+        .container {
+            position: relative;
+            z-index: 1;
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 40px 20px;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 60px;
+            align-items: center;
+            min-height: 100vh;
+        }
+        .hero { padding: 20px 0; }
+        .brand {
+            color: #a855f7;
+            font-size: 12px;
+            letter-spacing: 4px;
+            text-transform: uppercase;
+            font-weight: 800;
+            margin-bottom: 28px;
+            display: inline-block;
+            border: 1px solid rgba(168,85,247,0.3);
+            padding: 8px 14px;
+            border-radius: 999px;
+            background: rgba(168,85,247,0.08);
+        }
+        h1 {
+            font-size: clamp(32px, 4vw, 52px);
+            font-weight: 900;
+            line-height: 1.05;
+            margin-bottom: 22px;
+            letter-spacing: -1px;
+        }
+        h1 .gradient-text {
+            background: linear-gradient(180deg, #ffffff 30%, #a855f7 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .subtitle {
+            color: #c0c0c0;
+            font-size: 17px;
+            line-height: 1.6;
+            margin-bottom: 34px;
+        }
+        .schedule {
+            background: #141414;
+            border: 1px solid #222;
+            border-radius: 16px;
+            padding: 24px;
+            margin-bottom: 18px;
+        }
+        .schedule h3 {
+            color: #a855f7;
+            font-size: 14px;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            margin-bottom: 14px;
+        }
+        .day-row {
+            display: flex;
+            gap: 14px;
+            margin-bottom: 10px;
+            font-size: 14px;
+            color: #ccc;
+        }
+        .day-label {
+            font-weight: 700;
+            color: #fff;
+            min-width: 90px;
+        }
+        .form-card {
+            background: rgba(20,20,20,0.7);
+            backdrop-filter: blur(14px);
+            border: 1px solid #2a2a2a;
+            border-radius: 20px;
+            padding: 34px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.5);
+        }
+        .form-title {
+            font-size: 22px;
+            font-weight: 800;
+            margin-bottom: 6px;
+        }
+        .form-subtitle {
+            color: #888;
+            font-size: 14px;
+            margin-bottom: 22px;
+        }
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 14px;
+        }
+        .form-group { margin-bottom: 16px; }
+        label {
+            display: block;
+            color: #b0b0b0;
+            font-size: 13px;
+            margin-bottom: 8px;
+            font-weight: 600;
+            letter-spacing: 0.3px;
+        }
+        input, select, textarea {
+            width: 100%;
+            padding: 14px 16px;
+            background: #0a0a0a;
+            border: 1px solid #252525;
+            border-radius: 10px;
+            color: #ffffff;
+            font-size: 15px;
+            font-family: inherit;
+            transition: border-color 0.2s, box-shadow 0.2s;
+        }
+        select { appearance: none; color: #fff; }
+        select option { background: #0a0a0a; color: #fff; }
+        input:focus, textarea:focus, select:focus {
+            outline: none;
+            border-color: #a855f7;
+            box-shadow: 0 0 0 3px rgba(168,85,247,0.15);
+        }
+        textarea { min-height: 100px; resize: vertical; }
+        .submit-btn {
+            width: 100%;
+            padding: 16px;
+            background: linear-gradient(135deg, #a855f7 0%, #7c3aed 100%);
+            border: none;
+            border-radius: 12px;
+            color: #ffffff;
+            font-size: 16px;
+            font-weight: 800;
+            cursor: pointer;
+            transition: transform 0.2s, box-shadow 0.2s;
+            letter-spacing: 0.3px;
+            box-shadow: 0 10px 30px rgba(168,85,247,0.25);
+        }
+        .submit-btn:hover { transform: translateY(-2px); box-shadow: 0 14px 40px rgba(168,85,247,0.45); }
+        .submit-btn:active { transform: translateY(0); }
+        .submit-btn:disabled { opacity: 0.7; cursor: not-allowed; }
+        .status {
+            text-align: center;
+            margin-top: 14px;
+            font-size: 14px;
+            font-weight: 600;
+            min-height: 20px;
+        }
+        .footer {
+            text-align: center;
+            color: #555;
+            font-size: 13px;
+            margin-top: 20px;
+            line-height: 1.5;
+        }
+        @media (max-width: 860px) {
+            .container { grid-template-columns: 1fr; gap: 30px; padding-top: 24px; }
+            .form-card { padding: 24px; }
+        }
+        @media (max-width: 480px) {
+            .form-row { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+    <div class="bg-glow"></div>
+    <div class="container">
+        <div class="hero">
+            <p class="brand">AI + Faith</p>
+            <h1><span class="gradient-text">5-Day Time Freedom Reset</span><br>Jan 4-8, 2027</h1>
+            <p class="subtitle">Reclaim your hours, rebuild your revenue, and start 2027 with a system that runs without you. Five days. Real work. No fluff.</p>
+            <div class="schedule">
+                <h3>What you will build</h3>
+                <div class="day-row"><span class="day-label">Mon Jan 4:</span> Time Audit - Track every hour and find the leaks</div>
+                <div class="day-row"><span class="day-label">Tue Jan 5:</span> Elimination - Cut 10+ hours of waste by Friday</div>
+                <div class="day-row"><span class="day-label">Wed Jan 6:</span> Automation - Replace yourself in 1 workflow this week</div>
+                <div class="day-row"><span class="day-label">Thu Jan 7:</span> Leverage - Align revenue with your actual time</div>
+                <div class="day-row"><span class="day-label">Fri Jan 8:</span> Reset - Lock in your 90-day execution plan</div>
+            </div>
+            <p class="footer">Daily live sessions at 9am ET + workbook + private group access.</p>
+        </div>
+        <div>
+            <div class="form-card">
+                <h2 class="form-title">Reserve Your Spot</h2>
+                <p class="form-subtitle">Free challenge. Limited seats. Application required so you show up ready.</p>
+                <form id="challengeForm">
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="firstName">First Name</label>
+                            <input type="text" id="firstName" name="firstName" placeholder="David" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="lastName">Last Name</label>
+                            <input type="text" id="lastName" name="lastName" placeholder="Goecke" required>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="email">Email</label>
+                        <input type="email" id="email" name="email" placeholder="you@example.com" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="phone">Phone</label>
+                        <input type="tel" id="phone" name="phone" placeholder="+1 (555) 000-0000" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="revenue">Annual Revenue Range</label>
+                        <select id="revenue" name="revenue" required>
+                            <option value="" disabled selected>Select range</option>
+                            <option value="50k-100k">$50K - $100K</option>
+                            <option value="100k-250k">$100K - $250K</option>
+                            <option value="250k-500k">$250K - $500K</option>
+                            <option value="500k-1m">$500K - $1M</option>
+                            <option value="1m+">$1M+</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="hours">Hours Worked Per Week</label>
+                        <select id="hours" name="hours" required>
+                            <option value="" disabled selected>Select range</option>
+                            <option value="under40">Under 40</option>
+                            <option value="40-50">40 - 50</option>
+                            <option value="50-60">50 - 60</option>
+                            <option value="60-80">60 - 80</option>
+                            <option value="80plus">80+</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="goal">What is your #1 goal for this challenge?</label>
+                        <textarea id="goal" name="goal" placeholder="Get 10 hours back, hit $80K, stop working weekends..."></textarea>
+                    </div>
+                    <button type="submit" class="submit-btn">Claim My Spot</button>
+                    <p id="status" class="status" style="display:none;"></p>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        (function() {
+            var form = document.getElementById('challengeForm');
+            var btn = document.querySelector('.submit-btn');
+            var status = document.getElementById('status');
+            form.addEventListener('submit', async function(e) {
+                e.preventDefault();
+                btn.disabled = true;
+                btn.textContent = 'Reserving...';
+                status.style.display = 'block';
+                status.style.color = '#a0a0a0';
+                status.textContent = 'Saving your spot...';
+
+                var data = {
+                    firstName: document.getElementById('firstName').value.trim(),
+                    lastName: document.getElementById('lastName').value.trim(),
+                    email: document.getElementById('email').value.trim(),
+                    phone: document.getElementById('phone').value.trim(),
+                    revenue: document.getElementById('revenue').value,
+                    hours: document.getElementById('hours').value,
+                    goal: document.getElementById('goal').value.trim(),
+                    source: 'new-year-challenge-2027'
+                };
+
+                try {
+                    var res = await fetch('/api/challenge-signup', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify(data)
+                    });
+                    var result = await res.json();
+                    if (result.success) {
+                        window.location.replace('/challenge-confirmation');
+                    } else {
+                        status.textContent = result.message || 'Something went wrong. Try again.';
+                        status.style.color = '#ef4444';
+                        btn.disabled = false;
+                        btn.textContent = 'Claim My Spot';
+                    }
+                } catch (err) {
+                    status.textContent = 'Network error. Try again.';
+                    status.style.color = '#ef4444';
+                    btn.disabled = false;
+                    btn.textContent = 'Claim My Spot';
+                }
+            });
+        })();
+    </script>
+</body>
+</html>

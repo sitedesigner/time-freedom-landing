@@ -148,6 +148,39 @@ def send_welcome_email(first_name, email):
         print(f"Email error: {e}")
 
 
+def send_challenge_welcome_email(first_name, email):
+    try:
+        text = f"Hey {first_name},\n\nYou are confirmed for the 5-Day Time Freedom Reset Jan 4-8, 2027.\n\nCheck your inbox Monday morning for the Zoom link and prep workbook. Daily sessions start at 9am ET.\n\nSee you inside,\nDavid Goecke\n425-466-8650"
+
+        html = f"""<!DOCTYPE html>
+<html>
+<body style="font-family: system-ui, sans-serif; background:#0a0a0a; color:#fff; padding:40px 20px;">
+  <div style="max-width:500px; margin:0 auto;">
+    <p style="color:#a855f7; font-size:12px; letter-spacing:3px; text-transform:uppercase; font-weight:700;">AI + Faith</p>
+    <h1 style="font-size:24px; font-weight:800; margin-bottom:12px;">You are in, {first_name}.</h1>
+    <p style="color:#a0a0a0; line-height:1.6; margin-bottom:24px;">5-Day Time Freedom Reset Jan 4-8, 2027. Daily at 9am ET.</p>
+    <p style="color:#a0a0a0; line-height:1.6; margin-bottom:24px;">Prep workbook and Zoom link drop Monday morning.</p>
+    <p style="color:#666; font-size:14px;">See you inside,<br><strong style="color:#fff;">David Goecke</strong><br><a href="tel:4254668650" style="color:#a855f7;">425-466-8650</a></p>
+  </div>
+</body>
+</html>"""
+
+        msg = MIMEMultipart("alternative")
+        msg["Subject"] = "You are in. 5-Day Time Freedom Reset starts Jan 4"
+        msg["From"] = f"David Goecke <{GMAIL_USER}>"
+        msg["To"] = email
+        msg.attach(MIMEText(text, "plain"))
+        msg.attach(MIMEText(html, "html"))
+
+        context = ssl.create_default_context()
+        with smtplib.SMTP_SSL("smtp.gmail.com", 465, context=context) as server:
+            server.login(GMAIL_USER, GMAIL_APP_PASSWORD)
+            server.sendmail(GMAIL_USER, email, msg.as_string())
+        print(f"Challenge welcome email sent to {email}")
+    except Exception as e:
+        print(f"Challenge email error: {e}")
+
+
 class Handler(http.server.BaseHTTPRequestHandler):
     def do_GET(self):
         parsed = urlparse(self.path)
@@ -157,6 +190,10 @@ class Handler(http.server.BaseHTTPRequestHandler):
             self.serve_file("deal-room.html", "text/html")
         elif parsed.path == "/confirmation":
             self.serve_file("confirmation.html", "text/html")
+        elif parsed.path == "/challenge":
+            self.serve_file("challenge.html", "text/html")
+        elif parsed.path == "/challenge-confirmation":
+            self.serve_file("challenge-confirmation.html", "text/html")
         elif parsed.path == "/health":
             self.send_json(200, {"status": "ok"})
         elif parsed.path == "/api/ghl-status":
@@ -182,6 +219,8 @@ class Handler(http.server.BaseHTTPRequestHandler):
             self.handle_book()
         elif parsed.path == "/api/deal-close":
             self.handle_deal_close()
+        elif parsed.path == "/api/challenge-signup":
+            self.handle_challenge_signup()
         else:
             self.send_error(404)
 
@@ -376,6 +415,66 @@ class Handler(http.server.BaseHTTPRequestHandler):
             "message": "Deal closed. Summary generated.",
             "deal": package,
         })
+
+    def handle_challenge_signup(self):
+        content_length = int(self.headers.get("Content-Length", 0))
+        body = self.rfile.read(content_length) if content_length else b""
+        try:
+            data = json.loads(body) if body else {}
+        except json.JSONDecodeError:
+            self.send_json(400, {"success": False, "message": "Invalid JSON"})
+            return
+
+        if not data.get("firstName") or not data.get("email"):
+            self.send_json(400, {"success": False, "message": "Name and email required"})
+            return
+
+        # Respond immediately
+        self.send_json(200, {"success": True, "message": "Spot reserved"})
+
+        def process_async(payload=data):
+            try:
+                tags = ["5-Day Challenge 2027", "Lead"]
+                revenue = payload.get("revenue")
+                hours = payload.get("hours")
+                if revenue:
+                    tags.append(f"Revenue:{revenue}")
+                if hours:
+                    tags.append(f"Hours:{hours}")
+
+                contact_payload = {
+                    "firstName": payload.get("firstName", ""),
+                    "lastName": payload.get("lastName", ""),
+                    "email": payload.get("email", ""),
+                    "phone": payload.get("phone", ""),
+                    "locationId": LOCATION_ID,
+                    "tags": tags,
+                }
+                contact_result = create_contact(contact_payload)
+                contact_id = (contact_result or {}).get("contact", {}).get("id", "")
+                full_name = f"{payload.get('firstName', '')} {payload.get('lastName', '')}".strip()
+                if contact_result and contact_result.get("contact"):
+                    print(f"Challenge signup: {payload['email']} (ID: {contact_id})")
+
+                opp_result = None
+                if contact_id:
+                    opp_result = ghl_request(
+                        "POST",
+                        "/opportunities/",
+                        {
+                            "name": f"2027 NY Challenge - {full_name}",
+                            "status": "open",
+                            "contactId": contact_id,
+                            "locationId": LOCATION_ID,
+                            "pipelineId": PIPELINE_ID,
+                            "monetaryValue": 50000,
+                        },
+                    )
+                send_welcome_email(payload["firstName"], payload["email"])
+            except Exception as e:
+                print(f"Challenge async processing error: {e}")
+
+        threading.Thread(target=process_async, daemon=True).start()
 
     def handle_submit(self):
         content_length = int(self.headers.get("Content-Length", 0))
