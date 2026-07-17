@@ -16,10 +16,7 @@
             justify-content: center;
             padding: 40px 20px;
         }
-        .wrap {
-            max-width: 640px;
-            text-align: center;
-        }
+        .wrap { max-width: 640px; text-align: center; }
         .brand {
             color: #a855f7;
             font-size: 12px;
@@ -59,23 +56,48 @@
             margin-bottom: 18px;
             text-align: left;
         }
-        .cta-btn {
-            display: inline-block;
-            margin-top: 14px;
-            padding: 14px 28px;
-            background: linear-gradient(135deg, #a855f7 0%, #7c3aed 100%);
+        .booking-form {
+            display: grid;
+            gap: 12px;
+            margin-top: 12px;
+        }
+        .booking-form label {
+            color: #c0c0c0;
+            font-size: 14px;
+            font-weight: 600;
+            text-align: left;
+        }
+        .booking-form input, .booking-form select, .booking-form textarea {
+            width: 100%;
+            background: #0a0a0a;
             color: #fff;
-            text-decoration: none;
-            border-radius: 12px;
-            font-weight: 800;
+            border: 1px solid #222;
+            border-radius: 10px;
+            padding: 12px;
             font-size: 15px;
+            outline: none;
         }
-        .cta-btn:hover { filter: brightness(1.1); }
-        .footer {
-            color: #555;
-            font-size: 13px;
-            margin-top: 10px;
+        .booking-form input:focus, .booking-form select:focus, .booking-form textarea:focus {
+            border-color: #a855f7;
         }
+        .btn {
+            background: #a855f7;
+            color: #fff;
+            border: none;
+            border-radius: 10px;
+            padding: 14px;
+            font-size: 15px;
+            font-weight: 700;
+            cursor: pointer;
+        }
+        .btn:hover { filter: brightness(1.1); }
+        .status {
+            color: #c0c0c0;
+            font-size: 14px;
+            margin-top: 8px;
+        }
+        .status.success { color: #4ade80; }
+        .status.error { color: #f87171; }
         .next-steps {
             color: #c0c0c0;
             font-size: 15px;
@@ -83,6 +105,12 @@
             padding-left: 18px;
         }
         .next-steps li { margin-bottom: 8px; }
+        .footer {
+            color: #555;
+            font-size: 13px;
+            margin-top: 10px;
+        }
+        a { color: #a855f7; }
     </style>
 </head>
 <body>
@@ -97,16 +125,86 @@
         </div>
 
         <div class="card">
+            <strong style="color:#fff;">Request your Time Freedom Clarity Call</strong>
+            <form class="booking-form" id="booking-form">
+                <label>Preferred day</label>
+                <select name="day" required>
+                    <option value="">Select a day</option>
+                    <option>Monday</option>
+                    <option>Tuesday</option>
+                    <option>Wednesday</option>
+                    <option>Thursday</option>
+                    <option>Friday</option>
+                </select>
+
+                <label>Preferred time block</label>
+                <select name="time" required>
+                    <option value="">Select a time</option>
+                    <option>Morning</option>
+                    <option>Afternoon</option>
+                    <option>Evening</option>
+                </select>
+
+                <label>Notes (optional)</label>
+                <textarea name="notes" rows="3" placeholder="Anything I should know before we talk..."></textarea>
+
+                <button type="submit" class="btn">Send booking request</button>
+                <div class="status" id="booking-status"></div>
+            </form>
+        </div>
+
+        <div class="card">
             <strong style="color:#fff;">What happens next</strong>
             <ol class="next-steps">
                 <li>Watch your email for the prep packet and login info.</li>
                 <li>Join the private group 24 hours before kickoff.</li>
                 <li>Show up live Mon-Fri at 9am ET starting Jan 4.</li>
             </ol>
-            <a href="/" class="cta-btn">Back to Home</a>
+            <p class="next" style="margin-top:10px;">Check your email. Talk soon, David Goecke <br> <a href="tel:425-466-8650">425-466-8650</a></p>
         </div>
 
-        <p class="footer">Questions? Reply to the email or call 425-466-8650.</p>
+        <p class="footer">If you need anything, reply to the email or call me directly.</p>
     </div>
+
+    <script>
+        (function(){
+            var form = document.getElementById('booking-form');
+            var status = document.getElementById('booking-status');
+            if (!form) return;
+
+            form.addEventListener('submit', function(e){
+                e.preventDefault();
+                status.className = 'status';
+                status.textContent = 'Sending...';
+
+                var data = {
+                    day: form.day.value,
+                    time: form.time.value,
+                    notes: form.notes.value
+                };
+
+                fetch('/api/book', {
+                    method: 'POST',
+                    headers: {'Content-Type': 'application/json'},
+                    body: JSON.stringify(data)
+                })
+                .then(function(r){ return r.json(); })
+                .then(function(json){
+                    if (json.success) {
+                        status.className = 'status success';
+                        status.textContent = 'Booking request sent. Check your email for next steps.';
+                        form.reset();
+                    } else {
+                        status.className = 'status error';
+                        status.textContent = json.message || 'Something went wrong. Please call 425-466-8650.';
+                    }
+                })
+                .catch(function(){
+                    status.className = 'status error';
+                    status.textContent = 'Network error. Please call 425-466-8650.';
+                });
+            });
+        })();
+    </script>
 </body>
 </html>

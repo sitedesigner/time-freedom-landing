@@ -192,6 +192,7 @@
             <p class="brand">AI + Faith</p>
             <h1><span class="gradient-text">5-Day Time Freedom Reset</span><br>Jan 4-8, 2027</h1>
             <p class="subtitle">Reclaim your hours, rebuild your revenue, and start 2027 with a system that runs without you. Five days. Real work. No fluff.</p>
+            <div id="countdown" style="margin-bottom: 24px; font-size: 14px; color: #a0a0a0;"></div>
             <div class="schedule">
                 <h3>What you will build</h3>
                 <div class="day-row"><span class="day-label">Mon Jan 4:</span> Time Audit - Track every hour and find the leaks</div>
@@ -304,6 +305,28 @@
                     btn.textContent = 'Claim My Spot';
                 }
             });
+        })();
+    </script>
+
+    <script>
+        (function(){
+            var target = new Date('2027-01-04T09:00:00-05:00').getTime();
+            var el = document.getElementById('countdown');
+            if (!el) return;
+            function tick(){
+                var now = Date.now();
+                var diff = target - now;
+                if (diff <= 0){
+                    el.textContent = 'The challenge is live.';
+                    return;
+                }
+                var days = Math.floor(diff / 86400000);
+                var hours = Math.floor((diff % 86400000) / 3600000);
+                var minutes = Math.floor((diff % 3600000) / 60000);
+                el.textContent = 'Starts in ' + days + 'd ' + hours + 'h ' + minutes + 'm';
+            }
+            tick();
+            setInterval(tick, 60000);
         })();
     </script>
 </body>
