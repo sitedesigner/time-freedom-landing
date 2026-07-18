@@ -183,6 +183,7 @@ def send_challenge_welcome_email(first_name, email):
 
 class Handler(http.server.BaseHTTPRequestHandler):
     def do_HEAD(self):
+        print(f"HEAD {self.path}")
         parsed = urlparse(self.path)
         if parsed.path == "/health":
             self.send_json(200, {"status": "ok"})
