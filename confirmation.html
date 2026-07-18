@@ -49,6 +49,23 @@
             line-height: 1.6;
             margin-bottom: 26px;
         }
+        .proof {
+            background: #141414;
+            border: 1px solid #222;
+            border-radius: 16px;
+            padding: 24px;
+            margin-bottom: 18px;
+            text-align: left;
+        }
+        .proof strong { color: #fff; }
+        .proof ul { color: #c0c0c0; padding-left: 18px; margin-top:10px; line-height:1.7; font-size:15px; }
+        .urgency {
+            color: #f87171;
+            font-weight: 800;
+            font-size: 15px;
+            margin: 16px 0 8px;
+            letter-spacing: 0.2px;
+        }
         .card {
             background: #141414;
             border: 1px solid #222;
@@ -130,15 +147,24 @@
 <body>
     <div class="wrap">
         <div class="brand">AI + Faith</div>
-        <h1><span class="gradient-text">Application received.</span><br>Your next 90 days start now.</h1>
-        <p class="sub">I'll review your revenue, hours, and workflow before we book.<br>If we are a fit, I'll send your Time Freedom Clarity Call link within 24 hours.</p>
+        <h1><span class="gradient-text">Application received.</span><br>Now let's close the gap.</h1>
+        <p class="sub">You applied for a Time Freedom Clarity Call. Most applicants aren't ready to book yet. <strong>If your revenue matches what you said</strong> and your hours are still killing margin, this is where we execute.</p>
 
-        <div class="video-placeholder" id="video-block">
-            [VIDEO GOES HERE]
+        <div class="proof">
+            <strong>What happens after the Clarity Call:</strong>
+            <ul>
+                <li>I review your current revenue, weekly hours, and execution leaks.</li>
+                <li>If you qualify, I send your direct booking link within 24 hours.</li>
+                <li>On the call, we build your 90-day leverage plan with clear next steps.</li>
+            </ul>
+            <p class="next">Operators who hit the call with real numbers move faster.</p>
         </div>
+
+        <div class="urgency">Seats are limited. I only take calls when the gap is real.</div>
 
         <div class="card">
             <strong style="color:#fff;">Request your Time Freedom Clarity Call</strong>
+            <p style="color:#c0c0c0; font-size:14px; margin:8px 0 10px;">Pick your preferred time so I can prioritize your slot.</p>
             <form class="booking-form" id="booking-form">
                 <label>Preferred day</label>
                 <select name="day" required>
@@ -173,14 +199,13 @@
                 <li>If you qualify, I send a booking link for your Time Freedom Clarity Call.</li>
                 <li>On the call, we map your leverage gaps and 90-day execution plan.</li>
             </ol>
-            <p class="next">Check your email. Talk soon, David Goecke <br> <a href="tel:425-466-8650">425-466-8650</a></p>
+            <p class="next">Check your email. Talk soon, David Goecke <br> <a href="tel:4254668650">425-466-8650</a></p>
         </div>
 
         <p class="footer">If you need anything, reply to the email or call me directly.</p>
     </div>
 
     <script>
-        // Replace video placeholder with embedded video if URL is provided
         (function(){
             var params = new URLSearchParams(window.location.search);
             var video = params.get('video');
@@ -190,7 +215,6 @@
             }
         })();
 
-        // Booking form
         (function(){
             var form = document.getElementById('booking-form');
             var status = document.getElementById('booking-status');
@@ -216,7 +240,7 @@
                 .then(function(json){
                     if (json.success) {
                         status.className = 'status success';
-                        status.textContent = 'Booking request sent. Check your email for next steps.';
+                        status.textContent = 'Request sent. If your numbers qualify, I will send your booking link within 24 hours.';
                         form.reset();
                     } else {
                         status.className = 'status error';
