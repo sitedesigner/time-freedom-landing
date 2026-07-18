@@ -270,7 +270,10 @@
                     });
                     var result = await res.json();
                     if (result.success) {
-                        window.location.replace('/confirmation' + (result.paymentLink ? '?paymentLink=' + encodeURIComponent(result.paymentLink) : ''));
+                        var name = encodeURIComponent(data.firstName + ' ' + data.lastName);
+                        var email = encodeURIComponent(data.email);
+                        var phone = encodeURIComponent(data.phone);
+                        window.location.replace('/confirmation?name=' + name + '&email=' + email + '&phone=' + phone);
                     } else {
                         status.textContent = result.message || 'Something went wrong. Try again.';
                         status.style.color = '#ef4444';

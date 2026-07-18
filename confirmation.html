@@ -9,15 +9,9 @@
             background: #0a0a0a;
             color: #ffffff;
             min-height: 100vh;
-            display: flex;
-            align-items: center;
-            justify-content: center;
             padding: 40px 20px;
         }
-        .wrap {
-            max-width: 640px;
-            text-align: center;
-        }
+        .wrap { max-width: 860px; margin: 0 auto; }
         .brand {
             color: #a855f7;
             font-size: 12px;
@@ -55,7 +49,6 @@
             border-radius: 16px;
             padding: 24px;
             margin-bottom: 18px;
-            text-align: left;
         }
         .proof strong { color: #fff; }
         .proof ul { color: #c0c0c0; padding-left: 18px; margin-top:10px; line-height:1.7; font-size:15px; }
@@ -64,194 +57,74 @@
             font-weight: 800;
             font-size: 15px;
             margin: 16px 0 8px;
-            letter-spacing: 0.2px;
         }
-        .card {
-            background: #141414;
+        .calendar-frame {
+            width: 100%;
+            height: 860px;
             border: 1px solid #222;
             border-radius: 16px;
-            padding: 24px;
-            margin-bottom: 18px;
-            text-align: left;
-        }
-        .video-placeholder {
             background: #0f0f23;
-            border: 1px dashed #2d2d44;
-            border-radius: 12px;
-            padding: 18px;
-            color: #888;
-            font-size: 14px;
-            margin-bottom: 18px;
-            min-height: 200px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
+            margin-top: 18px;
         }
-        .next {
+        .fallback {
+            display: inline-block;
+            margin-top: 16px;
             color: #a855f7;
             font-weight: 700;
-            font-size: 15px;
-            margin-top: 6px;
+            text-decoration: none;
         }
+        .fallback:hover { text-decoration: underline; }
         .footer {
             color: #555;
             font-size: 13px;
-            margin-top: 10px;
+            margin-top: 24px;
         }
-        a { color: #a855f7; }
-
-        .booking-form {
-            display: grid;
-            gap: 12px;
-            margin-top: 12px;
-        }
-        .booking-form label {
-            color: #c0c0c0;
-            font-size: 14px;
-            font-weight: 600;
-            text-align: left;
-        }
-        .booking-form input, .booking-form select, .booking-form textarea {
-            width: 100%;
-            background: #0a0a0a;
-            color: #fff;
-            border: 1px solid #222;
-            border-radius: 10px;
-            padding: 12px;
-            font-size: 15px;
-            outline: none;
-        }
-        .booking-form input:focus, .booking-form select:focus, .booking-form textarea:focus {
-            border-color: #a855f7;
-        }
-        .btn {
-            background: #a855f7;
-            color: #fff;
-            border: none;
-            border-radius: 10px;
-            padding: 14px;
-            font-size: 15px;
-            font-weight: 700;
-            cursor: pointer;
-        }
-        .btn:hover { filter: brightness(1.1); }
-        .status {
-            color: #c0c0c0;
-            font-size: 14px;
-            margin-top: 8px;
-        }
-        .status.success { color: #4ade80; }
-        .status.error { color: #f87171; }
     </style>
 </head>
 <body>
     <div class="wrap">
         <div class="brand">AI + Faith</div>
         <h1><span class="gradient-text">Application received.</span><br>Now let's close the gap.</h1>
-        <p class="sub">You applied for a Time Freedom Clarity Call. Most applicants aren't ready to book yet. <strong>If your revenue matches what you said</strong> and your hours are still killing margin, this is where we execute.</p>
+        <p class="sub">You applied for a Time Freedom Clarity Call. Book directly into my calendar below.</p>
 
         <div class="proof">
-            <strong>What happens after the Clarity Call:</strong>
+            <strong>What happens after you book:</strong>
             <ul>
                 <li>I review your current revenue, weekly hours, and execution leaks.</li>
-                <li>If you qualify, I send your direct booking link within 24 hours.</li>
+                <li>If you qualify, the call is confirmed and you get a prep email.</li>
                 <li>On the call, we build your 90-day leverage plan with clear next steps.</li>
             </ul>
-            <p class="next">Operators who hit the call with real numbers move faster.</p>
         </div>
 
-        <div class="urgency">Seats are limited. I only take calls when the gap is real.</div>
+        <div class="urgency">Pick the time that works. Seats are limited.</div>
 
-        <div class="card">
-            <strong style="color:#fff;">Request your Time Freedom Clarity Call</strong>
-            <p style="color:#c0c0c0; font-size:14px; margin:8px 0 10px;">Pick your preferred time so I can prioritize your slot.</p>
-            <form class="booking-form" id="booking-form">
-                <label>Preferred day</label>
-                <select name="day" required>
-                    <option value="">Select a day</option>
-                    <option>Monday</option>
-                    <option>Tuesday</option>
-                    <option>Wednesday</option>
-                    <option>Thursday</option>
-                    <option>Friday</option>
-                </select>
-
-                <label>Preferred time block</label>
-                <select name="time" required>
-                    <option value="">Select a time</option>
-                    <option>Morning</option>
-                    <option>Afternoon</option>
-                    <option>Evening</option>
-                </select>
-
-                <label>Notes (optional)</label>
-                <textarea name="notes" rows="3" placeholder="Anything I should know before we talk..."></textarea>
-
-                <button type="submit" class="btn">Send booking request</button>
-                <div class="status" id="booking-status"></div>
-            </form>
+        <div id="calendar-wrap">
+            <iframe id="ghl-calendar" class="calendar-frame" src="" title="Book your Time Freedom Clarity Call"></iframe>
         </div>
 
-        <div class="card">
-            <strong style="color:#fff;">What happens next</strong>
-            <ol style="color:#c0c0c0; padding-left: 18px; margin-top:10px; line-height:1.7; font-size:15px;">
-                <li>I review your answers and current revenue/hours profile.</li>
-                <li>If you qualify, I send a booking link for your Time Freedom Clarity Call.</li>
-                <li>On the call, we map your leverage gaps and 90-day execution plan.</li>
-            </ol>
-            <p class="next">Check your email. Talk soon, David Goecke <br> <a href="tel:4254668650">425-466-8650</a></p>
-        </div>
+        <a id="fallback-link" class="fallback" href="#" target="_blank" rel="noopener">Open booking calendar in a new tab</a>
 
-        <p class="footer">If you need anything, reply to the email or call me directly.</p>
+        <p class="footer">If the calendar does not load, call me directly at <a href="tel:425-466-8650" style="color:#a855f7;">425-466-8650</a>.</p>
     </div>
 
     <script>
         (function(){
             var params = new URLSearchParams(window.location.search);
-            var video = params.get('video');
-            if (video) {
-                var block = document.getElementById('video-block');
-                block.innerHTML = '<iframe width="100%" height="360" src="' + video + '" frameborder="0" allow="autoplay; fullscreen" allowfullscreen style="border-radius:12px;"></iframe>';
-            }
-        })();
+            var name = params.get('name') || '';
+            var email = params.get('email') || '';
+            var phone = params.get('phone') || '';
+            var slot = encodeURIComponent('intro-call-20-min');
+            var bookingUrl = 'https://api.leadconnectorhq.com/widget/bookings/intro-call-20-min';
+            var query = [];
+            if (name) query.push('name=' + encodeURIComponent(name));
+            if (email) query.push('email=' + encodeURIComponent(email));
+            if (phone) query.push('phone=' + encodeURIComponent(phone));
+            if (query.length) bookingUrl += '?' + query.join('&');
 
-        (function(){
-            var form = document.getElementById('booking-form');
-            var status = document.getElementById('booking-status');
-            if (!form) return;
-
-            form.addEventListener('submit', function(e){
-                e.preventDefault();
-                status.className = 'status';
-                status.textContent = 'Sending...';
-
-                var data = {
-                    day: form.day.value,
-                    time: form.time.value,
-                    notes: form.notes.value
-                };
-
-                fetch('/api/book', {
-                    method: 'POST',
-                    headers: {'Content-Type': 'application/json'},
-                    body: JSON.stringify(data)
-                })
-                .then(function(r){ return r.json(); })
-                .then(function(json){
-                    if (json.success) {
-                        status.className = 'status success';
-                        status.textContent = 'Request sent. If your numbers qualify, I will send your booking link within 24 hours.';
-                        form.reset();
-                    } else {
-                        status.className = 'status error';
-                        status.textContent = json.message || 'Something went wrong. Please call 425-466-8650.';
-                    }
-                })
-                .catch(function(){
-                    status.className = 'status error';
-                    status.textContent = 'Network error. Please call 425-466-8650.';
-                });
-            });
+            var iframe = document.getElementById('ghl-calendar');
+            if (iframe) iframe.src = bookingUrl;
+            var fallback = document.getElementById('fallback-link');
+            if (fallback) fallback.href = bookingUrl;
         })();
     </script>
 </body>
