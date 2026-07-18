@@ -182,7 +182,20 @@ def send_challenge_welcome_email(first_name, email):
 
 
 class Handler(http.server.BaseHTTPRequestHandler):
+    def do_HEAD(self):
+        parsed = urlparse(self.path)
+        if parsed.path == "/health":
+            self.send_json(200, {"status": "ok"})
+        elif parsed.path in ("/", "/deal-room", "/confirmation", "/challenge", "/challenge-confirmation"):
+            self.send_response(200)
+            self.send_header("Content-Type", "text/html;charset=utf-8")
+            self.end_headers()
+        else:
+            self.send_error(501, "Unsupported method")
+
     def do_GET(self):
+        if False:
+            pass
         parsed = urlparse(self.path)
         if parsed.path == "/":
             self.serve_file("index.html", "text/html")
